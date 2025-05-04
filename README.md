@@ -1,16 +1,4 @@
-# @unqtech/unqverify
-
-Frontend SDK for age verification with UNQVerify using MitID.
-Official site https://www.aldersverificering.dk
-
-## 🔧 Installation
-
-```bash
-npm install @unqtech/unqverify
-````
-
-## 🚀 Usage
-# @unqtech/unqverify
+# @unqtech/age-verification-mitid
 
 Frontend SDK for age verification using UNQVerify (MitID-powered).
 
@@ -21,7 +9,7 @@ Frontend SDK for age verification using UNQVerify (MitID-powered).
 ## 🔧 Installation
 
 ```bash
-npm install @unqtech/unqverify
+npm install @unqtech/age-verification-mitid
 ```
 
 ---
@@ -31,7 +19,7 @@ npm install @unqtech/unqverify
 ### 1. Initialize and start the verification flow
 
 ```ts
-import { init, start, isVerified } from '@unqtech/unqverify'
+import { init, start, isVerified } from '@unqtech/age-verification-mitid'
 
 init({
   publicKey: 'pk_test_abc123',
@@ -53,7 +41,7 @@ if (!isVerified()) {
 ### 2. Handle the redirect result
 
 ```ts
-import { handleRedirectResult } from '@unqtech/unqverify'
+import { handleRedirectResult } from '@unqtech/age-verification-mitid'
 
 handleRedirectResult({
   onVerified: (payload) => {
@@ -85,7 +73,7 @@ If verification is successful, a cookie named `unqverify_token` is set and used 
 You can clear this with:
 
 ```ts
-import { resetVerification } from '@unqtech/unqverify'
+import { resetVerification } from '@unqtech/age-verification-mitid'
 
 resetVerification()
 ```

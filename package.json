@@ -1,26 +1,35 @@
 {
-  "name": "@unqtech/unqverify",
-  "version": "0.1.0",
+  "name": "@unqtech/age-verification-mitid",
+  "version": "0.1.1",
   "description": "Frontend SDK for age verification via UNQVerify using MitID",
   "keywords": [
     "age-verification",
     "identity",
     "mitid",
+    "danmark",
+    "alderstjek",
+    "aldersverificering",
+    "digital-identitet",
+    "dk",
+    "dk-verify",
+    "mitid-integration",
     "unqverify",
-    "sdk",
-    "jwt",
-    "browser"
+    "browser",
+    "frontend",
+    "age-check",
+    "verify-age"
   ],
   "license": "MIT",
-  "author": "UNQTech <hello@unqtech.dk>",
-  "homepage": "https://unqverify.com",
+  "author": "UNQTech ApS <support@unqtech.dk>",
+  "homepage": "https://www.aldersverificering.dk",
   "repository": {
     "type": "git",
-    "url": "https://github.com/UNQTech/unqverify-sdk"
+    "url": "git+https://github.com/UNQTechDK/unqverify-sdk.git"
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "publishConfig": { "access": "public" },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
