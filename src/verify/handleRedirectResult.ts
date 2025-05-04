@@ -1,6 +1,5 @@
 import { decodeAndStoreToken } from "./decodeAndStoreToken";
 import { jwtDecode } from "jwt-decode";
-import { VERIFICATION_COOKIE_KEY } from "../constants";
 
 type DecodedPayload = {
   ageVerified: boolean;
