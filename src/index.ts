@@ -11,3 +11,5 @@ export function start() {
 }
 
 export { resetVerification } from "./verify/resetVerification";
+
+export { isVerified } from "./verify/isVerified";
