@@ -13,7 +13,7 @@ export async function handleRedirectResult({
   onFailure,
 }: {
   onVerified: (payload: DecodedPayload) => void;
-  onFailure?: (error?: any) => void;
+  onFailure?: (error?: unknown) => void;
 }): Promise<void> {
   try {
     const url = new URL(window.location.href);
@@ -29,6 +29,8 @@ export async function handleRedirectResult({
       throw new Error("JWT verification failed");
     }
 
+    url.searchParams.delete("jwt");
+    window.history.replaceState({}, document.title, url.toString());
     const payload = jwtDecode<DecodedPayload>(token);
     onVerified(payload);
   } catch (err) {

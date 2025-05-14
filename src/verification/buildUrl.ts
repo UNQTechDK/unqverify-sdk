@@ -1,4 +1,4 @@
-import { UnqVerifyConfig } from "../types";
+import type { UnqVerifyConfig } from "../types";
 
 export function buildOidcUrl(config: UnqVerifyConfig): string {
   const isTestKey = config.publicKey.startsWith("pk_test_");

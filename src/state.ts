@@ -1,4 +1,4 @@
-import { UnqVerifyConfig } from "./types";
+import type { UnqVerifyConfig } from "./types";
 
 let config: UnqVerifyConfig | null = null;
 

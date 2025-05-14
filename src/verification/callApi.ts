@@ -13,11 +13,10 @@ export async function callVerificationApi(
   if (!res.ok) {
     throw new Error(`API error: ${res.status}`);
   }
+  const redirectUrl = await res.text();
 
-  const { redirectUrl } = await res.json();
-
-  if (!redirectUrl) {
-    throw new Error("No redirectUrl returned from API");
+  if (!redirectUrl.startsWith("http")) {
+    throw new Error("Invalid redirect URL returned from API");
   }
 
   return redirectUrl;

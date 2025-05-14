@@ -1,29 +1,46 @@
-// src/verify/decodeAndStoreToken.ts
-
 import { jwtVerify, createRemoteJWKSet } from "jose";
+import { jwtDecode } from "jwt-decode";
 import { setCookie } from "../utils/cookies";
 import { VERIFICATION_COOKIE_KEY } from "../constants";
 
-const JWKS_URL = "https://api.aldersverificering.dk/.well-known/jwks";
-
 type DecodedPayload = {
-  ageVerified: boolean;
-  userId: string;
+  aldersverificeringdk_verification_result: boolean;
+  aldersverificeringdk_verification_age: number;
   exp: number;
-  iat: number;
+  iss: string;
 };
+
+function getJwksUrlFromIssuer(issuer: string): string | null {
+  if (issuer === "https://test.aldersverificering.dk") {
+    return "https://test.api.aldersverificering.dk/well-known/openid-configuration/jwks";
+  }
+  if (issuer === "https://aldersverificering.dk") {
+    return "https://api.aldersverificering.dk/well-known/openid-configuration/jwks";
+  }
+  return null;
+}
 
 export async function decodeAndStoreToken(token: string): Promise<boolean> {
   try {
-    const JWKS = createRemoteJWKSet(new URL(JWKS_URL));
+    // 1. Decode unverified token to get issuer
+    const decoded = jwtDecode<DecodedPayload>(token);
+    const jwksUrl = getJwksUrlFromIssuer(decoded.iss);
 
+    if (!jwksUrl) {
+      console.warn("[UNQVerify] Unknown issuer:", decoded.iss);
+      return false;
+    }
+
+    // 2. Verify token using issuer-specific JWKS
+    const JWKS = createRemoteJWKSet(new URL(jwksUrl));
     const { payload } = await jwtVerify(token, JWKS, {
       algorithms: ["RS256"],
     });
 
-    const { ageVerified, exp } = payload as unknown as DecodedPayload;
+    const { aldersverificeringdk_verification_result, exp } =
+      payload as DecodedPayload;
 
-    if (!ageVerified || typeof exp !== "number") {
+    if (!aldersverificeringdk_verification_result || typeof exp !== "number") {
       console.warn(
         "[UNQVerify] Token is valid but user is not verified or exp is missing"
       );
@@ -33,7 +50,6 @@ export async function decodeAndStoreToken(token: string): Promise<boolean> {
     const secondsToExpiry = exp - Math.floor(Date.now() / 1000);
     if (secondsToExpiry <= 0) return false;
 
-    // Store the token in a cookie with exact expiry
     setCookie(VERIFICATION_COOKIE_KEY, token, secondsToExpiry);
 
     return true;

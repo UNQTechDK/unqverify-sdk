@@ -19,22 +19,36 @@ npm install @unqtech/age-verification-mitid
 ### 1. Initialize and start the verification flow
 
 ```ts
-import { init, start, isVerified } from '@unqtech/age-verification-mitid'
+import {
+  init,
+  startVerificationWithRedirect,
+  startVerificationWithPopup,
+  isVerified,
+  getVerifiedAge,
+  resetVerification,
+  handleRedirectResult,
+} from '@unqtech/age-verification-mitid'
 
 init({
   publicKey: 'pk_test_abc123',
   ageToVerify: 18,
   redirectUri: 'https://yourapp.com/verify-result',
+  mode: 'redirect', // or 'popup'
   onVerified: (payload) => {
     console.log('✅ Verified!', payload)
+    const age = getVerifiedAge()
+    console.log('Verified age:', age)
   },
   onFailure: (error) => {
+    // For React: setErrorMessage(error.message)
+    // For plain JS:
     console.error('❌ Verification failed', error)
   }
 })
 
 if (!isVerified()) {
-  start()
+  startVerificationWithRedirect()
+  // or: startVerificationWithPopup()
 }
 ```
 
@@ -82,13 +96,15 @@ resetVerification()
 
 ## 📘 API
 
-| Function                  | Description                                       |
-|---------------------------|---------------------------------------------------|
-| `init(config)`            | Initializes the SDK with your public key & options |
-| `start()`                 | Starts the age verification flow (redirect mode)  |
-| `isVerified()`            | Returns `true` if the user has a valid token      |
-| `handleRedirectResult()`  | Used on redirect page to verify and persist token |
-| `resetVerification()`     | Deletes the session token cookie                  |
+| Function                        | Description                                         |
+|----------------------------------|-----------------------------------------------------|
+| `init(config)`                   | Initializes the SDK with your public key & options  |
+| `startVerificationWithRedirect()`| Starts the flow in redirect mode                    |
+| `startVerificationWithPopup()`   | Starts the flow in popup mode                       |
+| `isVerified()`                   | Returns `true` if the user has a valid token        |
+| `handleRedirectResult()`         | Used on redirect page to verify and persist token   |
+| `getVerifiedAge()`               | Returns the verified age if available               |
+| `resetVerification()`            | Deletes the session token cookie                    |
 
 ---
 
@@ -97,7 +113,8 @@ resetVerification()
 All JWTs are signed with RS256 and verified against:
 
 ```
-https://api.aldersverificering.dk/.well-known/jwks
+https://test.api.aldersverificering.dk/well-known/openid-configuration/jwks
+https://api.aldersverificering.dk/well-known/openid-configuration/jwks
 ```
 
 ---

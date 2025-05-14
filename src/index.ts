@@ -1,15 +1,22 @@
-import { UnqVerifyConfig } from "./types";
 import { setConfig } from "./state";
-import { startVerificationFlow } from "./start/start";
+import type { UnqVerifyConfig } from "./types";
 
+// --- Public Types ---
+export type { UnqVerifyConfig } from "./types";
+
+// --- Public Init Method ---
 export function init(config: UnqVerifyConfig) {
   setConfig(config);
 }
 
-export function start() {
-  return startVerificationFlow();
-}
+// --- Core Verification Flows ---
+export {
+  startVerificationWithRedirect,
+  startVerificationWithPopup,
+} from "./verification/actions";
+export { handleRedirectResult } from "./verify/handleRedirectResult";
 
-export { resetVerification } from "./verify/resetVerification";
-
+// --- Verification State Utilities ---
 export { isVerified } from "./verify/isVerified";
+export { getVerifiedAge } from "./verify/getVerifiedAge";
+export { resetVerification } from "./verify/resetVerification";
