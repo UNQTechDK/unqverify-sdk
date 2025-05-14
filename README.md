@@ -33,7 +33,6 @@ init({
   publicKey: 'pk_test_abc123',
   ageToVerify: 18,
   redirectUri: 'https://yourapp.com/verify-result',
-  mode: 'redirect', // or 'popup'
   onVerified: (payload) => {
     console.log('✅ Verified!', payload)
     const age = getVerifiedAge()
