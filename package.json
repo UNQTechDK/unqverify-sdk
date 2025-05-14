@@ -1,6 +1,6 @@
 {
   "name": "@unqtech/age-verification-mitid",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Frontend SDK for age verification via UNQVerify using MitID",
   "keywords": [
     "age-verification",
